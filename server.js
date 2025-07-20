@@ -44,13 +44,13 @@ app.post('/upload/oficina', upload.single('pdf'), async (req, res) => {
   }
 });
 
-// Ruta para patio (3 archivos)
-app.post('/upload/patio', upload.array('pdfs', 3), async (req, res) => {
+// Ruta para patio (4 archivos)
+app.post('/upload/patio', upload.array('pdfs', 4), async (req, res) => {
   try {
-    const { nombreVisita, nombreEmpresa } = req.body;
+    const { nombreVisita, nombreEmpresa, fechaTrabajo } = req.body;
     const archivos = req.files;
 
-    if (!archivos || archivos.length !== 3) {
+    if (!archivos || archivos.length !== 4) {
       return res.status(400).send('Debes subir exactamente 3 archivos.');
     }
 
@@ -58,11 +58,11 @@ app.post('/upload/patio', upload.array('pdfs', 3), async (req, res) => {
       asunto: 'Solicitud de Trabajo en Patio',
       nombre: nombreVisita,
       empresa: nombreEmpresa,
+      fecha: fechaTrabajo,
       archivos: archivos
     });
-
     res.status(200).send('Correo enviado desde patio.');
-    console.log('Correo enviado desde patio con archivos:', archivos.map(f => f.originalname));
+    console.log('Correo enviado desde patio con exito');
   } catch (err) {
     console.error(err);
     res.status(500).send('Error al enviar correo.');

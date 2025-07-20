@@ -55,18 +55,19 @@
         </div>
         <!-- Subformulario: Trabajo en patio -->
           <div id="forTrabajo" class="formulario-trabajo hidden" method="POST" action="http://localhost:3000/upload">
-            <label>
-              Nombre del visitante:
-              <input type="text" name="nombreVisita" placeholder="Nombre completo del visitante">
-              Nombre empresa que visita:
-              <input type="text" name="nombreEmpresa" placeholder="Nombre empresa">
-
-            </label>
             <form id="visitaFormPatio" enctype="multipart/form-data">
-              <label for="pdfInputPatio">Agregar INE, Licencia, Póliza:</label>
+              <label>
+                Nombre del visitante:
+                <input type="text" name="nombreVisita" placeholder="Nombre completo del visitante">
+                Nombre empresa que visita:
+                <input type="text" name="nombreEmpresa" placeholder="Nombre de la empresa">
+                Fecha de visita:
+                <input type="date" name="fechaTrabajo" id="fechaTrabajo"  required>
+              </label>
+              <label for="pdfInputPatio">Agregar INE, Licencia de conducir, Póliza de seguro y SUA:</label>
               <div class="custom-file">
-                <input type="file" id="pdfInputPatio" name="pdfs" accept=".pdf" required>
-                <div class="content-name" id="fileNamePatio"></div> <!-- De span a div -->
+                <input type="file" id="pdfInputPatio" name="pdfs" accept=".pdf" multiple required>
+                <div class="custom-file" id="fileNamePatio"></div> <!-- De span a div -->
                 <button type="button" id="browseBtnPatio">Seleccionar archivo</button>
               </div>
               <button type="submit" id="submitBtnPatio" class="hidden">Enviar</button>
@@ -76,9 +77,21 @@
 
       <!-- Formulario para "Envio de facturas" -->
       <div id="forDocumentos" class="formulario-destinatario hidden">
-        <h3>Envío de Facturas</h3>
-        <label>Área responsable:</label>
-        <input type="text" name="areaAdmin" placeholder="Ej. Finanzas, Compras..."><br><br>
+          <form id="visitaFormPatio" enctype="multipart/form-data">
+              <label>
+                Nombre del proveedor:
+                <input type="text" name="nombreProv" placeholder="Nombre completo del proveedor">
+                Fecha de visita:
+                <input type="date" name="fechaTrabajo" id="fechaTrabajo"  required>
+              </label>
+              <label for="pdfInputPatio">Agregar INE, Licencia de conducir, Póliza de seguro y SUA:</label>
+              <div class="custom-file">
+                <input type="file" id="pdfInputPatio" name="pdfs" accept=".pdf" multiple required>
+                <div class="custom-file" id="fileNamePatio"></div> <!-- De span a div -->
+                <button type="button" id="browseBtnPatio">Seleccionar archivo</button>
+              </div>
+              <button type="submit" id="submitBtnPatio" class="hidden">Enviar</button>
+          </form>
       </div>
     </div>
   </div>

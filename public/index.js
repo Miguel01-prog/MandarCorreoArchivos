@@ -23,11 +23,20 @@ document.addEventListener('DOMContentLoaded', () => {
     browseBtn.addEventListener('click', () => pdfInput.click());
   }
 
-  // Mostrar botón "Enviar" si hay archivo seleccionado - patio
+  // Mostrar botón "Enviar" si hay archivo seleccionado - patio (máx 4 archivos)
   if (pdfInputPatio) {
     pdfInputPatio.addEventListener('change', () => {
-      fileNamePatio.textContent = Array.from(pdfInputPatio.files).map(f => f.name).join(', ');
-      submitBtnPatio.classList.toggle('hidden', pdfInputPatio.files.length === 0);
+      const files = Array.from(pdfInputPatio.files);
+      if (files.length !== 4) {
+        alert('Debes seleccionar exactamente 4 archivos PDF.');
+        pdfInputPatio.value = '';
+        fileNamePatio.textContent = '';
+        submitBtnPatio.classList.add('hidden');
+        return;
+      }
+
+      fileNamePatio.textContent = files.map(f => f.name).join(', ');
+      submitBtnPatio.classList.remove('hidden');
     });
   }
 
@@ -44,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const empresa = document.getElementById('empresaVisita')?.value || '';
       const nombre = document.getElementById('nombreVisita')?.value || '';
       const fecha = document.getElementById('fechaVisita')?.value || '';
-      52
+
       const formData = new FormData(this);
       formData.append('empresa', empresa);
       formData.append('nombre', nombre);
@@ -67,13 +76,21 @@ document.addEventListener('DOMContentLoaded', () => {
     visitaFormPatio.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      const nombre = document.querySelector('#forTrabajo input[name="nombreVisita"]')?.value || '';
-      const empresa = document.querySelector('#forTrabajo input[name="nombreEmpresa"]')?.value || '';
+      const files = pdfInputPatio.files;
+      if (!files || files.length !== 4) {
+        alert('Debes seleccionar exactamente 4 archivos PDF antes de enviar.');
+        return;
+      }
+
+      const empresa = document.getElementById('empresaVisita')?.value || '';
+      const nombre = document.getElementById('nombreVisita')?.value || '';
+      const fecha = document.getElementById('fechaTrabajo')?.value || '';
 
       const formData = new FormData(this);
       formData.append('empresa', empresa);
       formData.append('nombre', nombre);
-      formData.append('motivo', 'trabajo en patio');
+      formData.append('fecha', fecha);
+      formData.append('motivo', 'Trabajo en patio');
 
       fetch('http://localhost:3000/upload/patio', {
         method: 'POST',
