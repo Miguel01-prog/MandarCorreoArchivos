@@ -43,15 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const empresa = document.getElementById('empresaVisita')?.value || '';
       const nombre = document.getElementById('nombreVisita')?.value || '';
-      const fecha = Array.isArray(fechaVisita) ? fechaVisita[0] : fechaVisita;
-
-      
-
-
+      const fecha = document.getElementById('fechaVisita')?.value || '';
+      52
       const formData = new FormData(this);
       formData.append('empresa', empresa);
       formData.append('nombre', nombre);
-      formData.append('fechaVisita', fecha);
+      formData.append('fecha', fecha);
       formData.append('motivo', 'visita a oficina');
 
       fetch('http://localhost:3000/upload/oficina', {

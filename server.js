@@ -87,9 +87,13 @@ async function enviarCorreo({ asunto, nombre, empresa, fecha, archivos }) {
   const htmlBody = `
     <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
       <h2 style="color: #004085;">${asunto}</h2>
-      <p><strong>Nombre del visitante:</strong> ${nombre}</p>
-      <p><strong>Empresa:</strong> ${empresa}</p>
-      ${fecha ? `<p><strong>Fecha de visita:</strong> ${fecha}</p>` : ''}
+      <p string="color: #000000ff"><strong>Nombre del visitante:</strong> ${nombre}</p>
+      <p string="color: #000000ff"><strong>Empresa:</strong> ${empresa}</p>
+      ${
+      fecha && fecha.trim() !== ''
+        ? `<p><strong>Fecha de visita:</strong> ${formatearFecha(fecha)}</p>`
+        : ''
+    }
     </div>
   `;
 
@@ -110,3 +114,18 @@ async function enviarCorreo({ asunto, nombre, empresa, fecha, archivos }) {
 app.listen(PORT, () => {
   console.log(`Servidor iniciado en http://localhost:${PORT}`);
 });
+
+
+function formatearFecha(fechaRaw) {
+  // Soporta tanto 'yyyy-mm-dd' como ['yyyy-mm-dd', '']
+  const fechaStr = Array.isArray(fechaRaw) ? fechaRaw[0] : fechaRaw;
+  if (!fechaStr) return '';
+
+  const [anio, mes, dia] = fechaStr.split('-');
+  const meses = [
+    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+  ];
+
+  return `${parseInt(dia)} de ${meses[parseInt(mes) - 1]} de ${anio}`;
+}
