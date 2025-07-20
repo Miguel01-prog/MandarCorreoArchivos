@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -35,6 +35,7 @@ app.post('/upload/oficina', upload.single('pdf'), async (req, res) => {
     });
 
     res.status(200).send('Correo enviado desde oficina.');
+    console.log('Correo enviado desde oficina con archivo:', archivo.originalname);
   } catch (err) {
     console.error(err);
     res.status(500).send('Error al enviar correo.');
@@ -44,7 +45,7 @@ app.post('/upload/oficina', upload.single('pdf'), async (req, res) => {
 // Ruta para patio (3 archivos)
 app.post('/upload/patio', upload.array('pdfs', 3), async (req, res) => {
   try {
-    const { nombreVisita, empresaVisita } = req.body;
+    const { nombreVisita, nombreEmpresa } = req.body; // fijarse nombres del formulario
     const archivos = req.files;
 
     if (!archivos || archivos.length !== 3) {
@@ -54,11 +55,12 @@ app.post('/upload/patio', upload.array('pdfs', 3), async (req, res) => {
     await enviarCorreo({
       asunto: 'Solicitud de Trabajo en Patio',
       nombre: nombreVisita,
-      empresa: empresaVisita,
+      empresa: nombreEmpresa,
       archivos: archivos
     });
 
     res.status(200).send('Correo enviado desde patio.');
+    console.log('Correo enviado desde patio con archivos:', archivos.map(f => f.originalname));
   } catch (err) {
     console.error(err);
     res.status(500).send('Error al enviar correo.');
@@ -68,13 +70,11 @@ app.post('/upload/patio', upload.array('pdfs', 3), async (req, res) => {
 // Función para enviar correo con archivos adjuntos
 async function enviarCorreo({ asunto, nombre, empresa, archivos }) {
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: 587,
-    secure: false,
+    service: 'gmail',
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
-    }
+      user: process.env.EMAIL_USER, // Ejemplo: vdcqrorecepcionfinanzas@gmail.com
+      pass: process.env.EMAIL_PASS, // Contraseña o app password
+    },
   });
 
   const attachments = archivos.map(file => ({
@@ -83,15 +83,17 @@ async function enviarCorreo({ asunto, nombre, empresa, archivos }) {
   }));
 
   await transporter.sendMail({
-    from: `"Sistema de Solicitudes" <${process.env.SMTP_USER}>`,
-    to: ['correo1@ejemplo.com', 'correo2@ejemplo.com'], // cámbialos
+    from: `"Sistema de Solicitudes" <${process.env.EMAIL_USER}>`,
+    to: process.env.EMAIL_TO, // En .env define: EMAIL_TO=correo1@ejemplo.com,correo2@ejemplo.com
     subject: asunto,
     text: `Nombre: ${nombre}\nEmpresa: ${empresa}`,
     attachments
   });
 
   // Eliminar archivos temporales
-  archivos.forEach(file => fs.unlink(file.path, () => {}));
+  archivos.forEach(file => fs.unlink(file.path, (err) => {
+    if (err) console.error('Error eliminando archivo:', err);
+  }));
 }
 
 app.listen(PORT, () => {
