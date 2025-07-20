@@ -1,0 +1,212 @@
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.logo{
+    width: 80%;
+    height: auto;
+    margin-left: 8%;
+    margin-bottom: 10%;
+}
+
+/* Fondo general */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #e0ecf8, #f8f9fa);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* Contenedor principal */
+.container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 420px;
+}
+
+/* Título */
+h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+/* Labels y inputs */
+label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #34495e;
+}
+
+input[type="text"],
+select,
+input[type="file"] {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  transition: border 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: #00ccaa;
+  outline: none;
+  background-color: #fff;
+}
+
+/* Botón */
+button {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #00ccaa;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #00927a;
+}
+
+/* Formularios por sección */
+.formulario-destinatario {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-left: 5px solid #00ccaa;
+  background-color: #f1f7ff;
+  border-radius: 8px;
+}
+
+/* Ocultar elementos */
+.hidden {
+  display: none;
+}
+
+.checkbox-group .column {
+  display: flex;
+  gap: 1.5rem; /* espacio entre radios */
+  align-items: center; /* para que queden alineados verticalmente */
+}
+.checkbox-group input[type="checkbox"] {
+  margin-right: 0.5rem; /* espacio entre checkbox y texto */
+}
+
+.custom-file {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.custom-file input[type="file"] {
+  display: none;
+}
+
+#browseBtn {
+  padding: 0.5rem 1rem;
+  background-color: #37ffde;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.3s ease;
+}
+
+#browseBtn:hover {
+  background-color: #00b899;
+}
+
+#fileName {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px;
+  margin-bottom: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+}
+
+.file-list {
+  margin-top: 10px;
+}
+
+.file-item {
+  position: relative;
+  padding: 8px 30px 8px 10px;
+  margin-bottom: 8px;
+  background-color: #f3f3f3;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.remove-file {
+  position: absolute;
+  top: -34px;          /* ajustado para quedar más cerca del borde */
+  right: -8px;        /* ligeramente fuera para superponerse */
+  border: 1px solid crimson;
+  padding: 0;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  width: 25px;
+  line-height: 1;
+  color: white;
+  background: crimson;
+  z-index: 1;
+  border : 2px solid #fff; 
+}
+
+.remove-file:hover {
+  background: darkred;
+}
+
+
+
+
+/* Responsive */
+@media (max-width: 480px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  button {
+    font-size: 0.95rem;
+  }
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Enviar PDFs</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="body">
+    <div class="container">
+     
+<img src="./img/Wallenius_Wilhelmsen_Logo.png" alt="Logo" class="logo">
+      <!-- Selección principal -->
+      <select id="opcionPrincipal" name="opcionPrincipal" required>
+        <option value="">Selecciona una opción</option>
+        <option value="accesos">Solicitar ingreso al VDC</option>
+        <option value="documentos">Envío de facturas</option>
+      </select>
+
+      <!-- Formulario para "Solicitar ingreso al VDC" -->
+      <div id="forAccesos" class="formulario-destinatario hidden">
+        <p><strong>Tipo de acceso:</strong></p>
+        <div class="checkbox-group">
+          <div class="column">
+            <label>
+              <input type="radio" name="tipoAcceso" value="visita" id="checkVisita">
+              Visita a oficina
+            </label>
+            <label>
+              <input type="radio" name="tipoAcceso" value="trabajo" id="checkTrabajo">
+              Trabajo en patio
+            </label>
+          </div>
+        </div>
+        <!-- Subformulario: Visita a oficina -->
+        <div id="forTipoAcceso" class="formulario-tipo hidden">
+          <label>
+            Nombre del visitante:
+            <input type="text" name="empresaVisita" placeholder="Nombre empresa" id="empresaVisita">
+            Empresa del visitante:
+            <input type="text" name="nombreVisita" placeholder="Nombre completo" id="nombreVisita">
+            
+          </label>
+          <form id="visitaForm" enctype="multipart/form-data">
+            <label for="pdfInput">Agregar INE:</label>
+           <div class="custom-file">
+              <input type="file" id="pdfInput" name="pdfs" accept=".pdf" multiple required>
+              <div id="fileName"></div> <!-- De span a div -->
+              <button type="button" id="browseBtn">Seleccionar archivo</button>
+            </div>
+            <button type="submit" id="submitBtn" class="hidden">Enviar</button>
+            <p style="color: gray; text-align: center ;"><em>Nota: portar chaleco reflejante y bota de seguridad al momento de la visita.</em></p>
+          </form>
+        </div>
+        <!-- Subformulario: Trabajo en patio -->
+          <div id="forTrabajo" class="formulario-trabajo hidden" method="POST" action="http://localhost:3000/upload">
+            <label>
+              Nombre del visitante:
+              <input type="text" name="nombreVisita" placeholder="Nombre completo">
+              Empresa del visitante:
+              <input type="text" name="nombreEmpresa" placeholder="Nombre empresa">
+
+            </label>
+            <form id="visitaFormPatio" enctype="multipart/form-data">
+              <label for="pdfInputPatio">Agregar INE, Licencia, Póliza:</label>
+              <div class="custom-file">
+                <input type="file" id="pdfInputPatio" name="pdfs" accept=".pdf" multiple required>
+                <div class="content-name" id="fileNamePatio"></div> <!-- De span a div -->
+                <button type="button" id="browseBtnPatio">Seleccionar archivo</button>
+              </div>
+              <button type="submit" id="submitBtnPatio" class="hidden">Enviar</button>
+            </form>
+          </div>
+      </div>
+
+      <!-- Formulario para "Envio de facturas" -->
+      <div id="forDocumentos" class="formulario-destinatario hidden">
+        <h3>Envío de Facturas</h3>
+        <label>Área responsable:</label>
+        <input type="text" name="areaAdmin" placeholder="Ej. Finanzas, Compras..."><br><br>
+      </div>
+    </div>
+  </div>
+  <script src="./index.js"></script>
+</body>
+</html>
