@@ -22,8 +22,9 @@ const upload = multer({ storage });
 // Ruta para oficina (1 archivo)
 app.post('/upload/oficina', upload.single('pdf'), async (req, res) => {
   try {
-    const { nombreVisita, empresaVisita } = req.body;
+    const { nombreVisita, empresaVisita, fechaVisita } = req.body;
     const archivo = req.file;
+    //console.log(req.body);
 
     if (!archivo) return res.status(400).send('No se recibió el archivo.');
 
@@ -31,6 +32,7 @@ app.post('/upload/oficina', upload.single('pdf'), async (req, res) => {
       asunto: 'Solicitud de Visita a Oficina',
       nombre: nombreVisita,
       empresa: empresaVisita,
+      fecha: fechaVisita,
       archivos: [archivo]
     });
 
@@ -45,7 +47,7 @@ app.post('/upload/oficina', upload.single('pdf'), async (req, res) => {
 // Ruta para patio (3 archivos)
 app.post('/upload/patio', upload.array('pdfs', 3), async (req, res) => {
   try {
-    const { nombreVisita, nombreEmpresa } = req.body; // fijarse nombres del formulario
+    const { nombreVisita, nombreEmpresa } = req.body;
     const archivos = req.files;
 
     if (!archivos || archivos.length !== 3) {
@@ -67,13 +69,13 @@ app.post('/upload/patio', upload.array('pdfs', 3), async (req, res) => {
   }
 });
 
-// Función para enviar correo con archivos adjuntos
-async function enviarCorreo({ asunto, nombre, empresa, archivos }) {
+// Función para enviar correo con archivos adjuntos y contenido HTML
+async function enviarCorreo({ asunto, nombre, empresa, fecha, archivos }) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.EMAIL_USER, // Ejemplo: vdcqrorecepcionfinanzas@gmail.com
-      pass: process.env.EMAIL_PASS, // Contraseña o app password
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
 
@@ -82,16 +84,25 @@ async function enviarCorreo({ asunto, nombre, empresa, archivos }) {
     path: path.join(__dirname, file.path)
   }));
 
+  const htmlBody = `
+    <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+      <h2 style="color: #004085;">${asunto}</h2>
+      <p><strong>Nombre del visitante:</strong> ${nombre}</p>
+      <p><strong>Empresa:</strong> ${empresa}</p>
+      ${fecha ? `<p><strong>Fecha de visita:</strong> ${fecha}</p>` : ''}
+    </div>
+  `;
+
   await transporter.sendMail({
     from: `"Sistema de Solicitudes" <${process.env.EMAIL_USER}>`,
-    to: process.env.EMAIL_TO, // En .env define: EMAIL_TO=correo1@ejemplo.com,correo2@ejemplo.com
+    to: process.env.EMAIL_TO,
     subject: asunto,
-    text: `Nombre: ${nombre}\nEmpresa: ${empresa}`,
+    html: htmlBody,
     attachments
   });
 
   // Eliminar archivos temporales
-  archivos.forEach(file => fs.unlink(file.path, (err) => {
+  archivos.forEach(file => fs.unlink(file.path, err => {
     if (err) console.error('Error eliminando archivo:', err);
   }));
 }

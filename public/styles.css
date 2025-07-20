@@ -49,7 +49,8 @@ label {
 
 input[type="text"],
 select,
-input[type="file"] {
+input[type="file"],
+input[type="date"] {
   width: 100%;
   padding: 0.6rem;
   margin-top: 0.3rem;

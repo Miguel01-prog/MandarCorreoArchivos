@@ -34,14 +34,15 @@
         </div>
         <!-- Subformulario: Visita a oficina -->
         <div id="forTipoAcceso" class="formulario-tipo hidden">
-          <label>
-            Nombre del visitante:
-            <input type="text" name="empresaVisita" placeholder="Nombre del empleado" id="empresaVisita">
-            Nombre de empresa del visitante:
-            <input type="text" name="nombreVisita" placeholder="Nombre de la empresa" id="nombreVisita">
-            
-          </label>
           <form id="visitaForm" enctype="multipart/form-data">
+            <label>
+              Nombre del visitante:
+              <input type="text" name="nombreVisita" placeholder="Nombre del empleado" id="nombreVisita">
+              Nombre de empresa del visitante:
+              <input type="text" name="empresaVisita" placeholder="Nombre de la empresa" id="empresaVisita">
+              Fecha de visita:
+              <input type="date" name="fechaVisita" id="fechaTrabajo" required>
+            </label>
             <label for="pdfInput">Agregar INE:</label>
            <div class="custom-file">
                <input type="file" id="pdfInput" name="pdf" accept=".pdf" required>
